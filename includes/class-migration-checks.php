@@ -49,11 +49,13 @@ class BH_Site_Migrator_Migration_Checks {
 	 * @return bool
 	 */
 	public static function can_mysqldump( $can_migrate ) {
+		if( $can_migrate ) {
 		$process = new Process( array( 'which', 'mysqldump' ) );
 		$process->run();
 		$can_mysqldump = ! empty( $process->getOutput() );
 
 		self::$results['can_mysqldump'] = $can_mysqldump;
+		}
 
 		return $can_migrate ? $can_mysqldump : $can_migrate;
 	}
@@ -136,7 +138,7 @@ class BH_Site_Migrator_Migration_Checks {
 	 *
 	 * @return bool
 	 */
-	public static function has_disk_free_space( $can_migrate ) {
+	public static function has_disk_free_space( $can_migrate = true ) {
 		$has_disk_free_space = function_exists( 'disk_free_space' );
 
 		self::$results['has_disk_free_space'] = $has_disk_free_space;
@@ -151,7 +153,7 @@ class BH_Site_Migrator_Migration_Checks {
 	 *
 	 * @return bool
 	 */
-	public static function has_disk_total_space( $can_migrate ) {
+	public static function has_disk_total_space( $can_migrate = true ) {
 		$has_disk_total_space = function_exists( 'disk_total_space' );
 
 		self::$results['has_disk_total_space'] = $has_disk_total_space;

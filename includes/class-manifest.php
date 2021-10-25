@@ -79,12 +79,14 @@ class BH_Site_Migrator_Manifest extends BH_Site_Migrator_Registry {
 	 */
 	protected function env() {
 		$uploads = wp_get_upload_dir();
+		$has_disk_free_space = BH_Site_Migrator_Migration_Checks::has_disk_free_space();
+		$has_disk_total_space = BH_Site_Migrator_Migration_Checks::has_disk_total_space();
 
 		return array(
 			'filesystem'      => array(
 				'documentRoot'   => $_SERVER['DOCUMENT_ROOT'],
-				'freeSpace'      => disk_free_space( ABSPATH ),
-				'totalSpace'     => disk_total_space( ABSPATH ),
+				'freeSpace'      => $has_disk_free_space ? disk_free_space( ABSPATH ) : 0,
+				'totalSpace'     => $has_disk_total_space ? disk_total_space( ABSPATH ) : 0,
 				'uploadsDirSize' => bh_site_migrator_get_dir_size( $uploads['basedir'] ),
 			),
 			'ipAddress'       => $_SERVER['SERVER_ADDR'],
